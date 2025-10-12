@@ -1,4 +1,4 @@
-// File: F:\Work\zoriography\app\layout.tsx
+// File: /Users/federicodursi/Desktop/Work/zoriography/app/layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

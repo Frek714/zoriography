@@ -431,7 +431,7 @@ const PortfolioPage = () => {
       <AnimatePresence>
         {selectedItem && (
           <motion.div
-            className="fixed inset-0 z-[90] flex items-center justify-center bg-black/85"
+            className="fixed inset-0 z-[90] flex items-center justify-center glassed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -451,7 +451,7 @@ const PortfolioPage = () => {
               transition={{ type: "spring", stiffness: 220, damping: 24 }}
               className="relative w-[80vw] h-[80vh]"
             >
-              <div className="flex h-full flex-col gap-10 overflow-hidden rounded border border-white/10 bg-white/10 p-8 text-left text-white backdrop-blur-xl backdrop-saturate-200 md:flex-row md:gap-14 md:p-6">
+              <div className="flex h-full flex-col gap-10 overflow-hidden rounded border border-white/10 bg-black/70 p-8 text-left text-white md:flex-row md:gap-14 md:p-6">
                 <div className="relative flex-[0.7] min-h-[320px] w-full overflow-hidden rounded border border-white/10 bg-black/30">
                   <Image
                     src={selectedItem.image}
