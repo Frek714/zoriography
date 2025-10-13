@@ -9,6 +9,7 @@ export const NAV_ITEMS = [
   { href: "/", label: "Home" },
   { href: "/chi-sono", label: "Chi sono" },
   { href: "/portfolio", label: "Portfolio" },
+  { href: "/acquista", label: "Acquista" },
   { href: "/contatti", label: "Contatti" }
 ];
 
@@ -16,7 +17,7 @@ const SiteHeader = () => {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [heroInView, setHeroInView] = useState(false);
-  const isHeroDriven = pathname === "/portfolio";
+  const isHeroDriven = pathname === "/portfolio" || pathname === "/contatti" || pathname === "/acquista";
   const { scrollYProgress } = useScroll();
   const headerOpacity = useTransform(scrollYProgress, [0, 0.08, 0.18], [0, 0, 1]);
   const [isInteractive, setIsInteractive] = useState(!isHome);

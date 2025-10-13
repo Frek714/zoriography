@@ -16,20 +16,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/template.js"
     ],
-    "/chi-sono/page": [
+    "/acquista/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/chi-sono/page.js"
-    ],
-    "/portfolio/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/portfolio/page.js"
-    ],
-    "/contatti/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/contatti/page.js"
+      "static/chunks/app/acquista/page.js"
     ]
   }
 }
