@@ -1,4 +1,4 @@
-// File: /Users/federicodursi/Desktop/Work/zoriography/app/page.tsx
+// File: F:\Work\Zotch\zoriography\app\page.tsx
 import * as entry from '../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
