@@ -1,28 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import heroImage from "@/resources/images/wave-haikei-edit-2.png";
+import type { SitePhoto } from "@/resources/images/site-photos";
+import { sitePhotos as sitePhotoCollection } from "@/resources/images/site-photos";
 
 type FeatureSection = {
   title: string;
   subtitle: string;
   description: string;
-  image: string;
+  photo: SitePhoto;
   align: "left" | "right";
 };
 
-type GalleryItem = {
-  title: string;
-  image: string;
-};
+type GalleryItem = SitePhoto;
+
+const photoById = (id: string): SitePhoto =>
+  sitePhotoCollection.find((photo) => photo.id === id) ??
+  sitePhotoCollection[0];
 
 const featureSections: FeatureSection[] = [
   {
@@ -30,8 +28,7 @@ const featureSections: FeatureSection[] = [
     subtitle: "Fermarsi ad osservare",
     description:
       "La fotografia naturalistica è il punto di partenza del mio percorso. Mi piace raccontare la forza e la calma della natura nei suoi dettagli più semplici.",
-    image:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1080&auto=format&fit=crop",
+    photo: photoById("photo4"),
     align: "left",
   },
   {
@@ -39,8 +36,7 @@ const featureSections: FeatureSection[] = [
     subtitle: "Assaporare il momento",
     description:
       "Nei paesaggi cerco equilibrio, profondità e luce. Ogni luogo ha un ritmo diverso, e fotografarlo significa imparare ad ascoltarlo.",
-    image:
-      "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1080&auto=format&fit=crop",
+    photo: photoById("photo9"),
     align: "right",
   },
   {
@@ -48,8 +44,7 @@ const featureSections: FeatureSection[] = [
     subtitle: "Cogliere l'attimo",
     description:
       "Mi affascina la vita selvatica e l’imprevedibilità dei suoi momenti. Ogni scatto è il risultato di pazienza, rispetto e attenzione.",
-    image:
-      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1080&auto=format&fit=crop",
+    photo: photoById("photo16"),
     align: "left",
   },
   {
@@ -57,8 +52,7 @@ const featureSections: FeatureSection[] = [
     subtitle: "Divertirsi a scoprire",
     description:
       "Nei viaggi trovo nuovi modi di guardare. Mi interessa cogliere la luce, le persone e le atmosfere che rendono unico ogni posto.",
-    image:
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1080&auto=format&fit=crop",
+    photo: photoById("photo22"),
     align: "right",
   },
   {
@@ -66,139 +60,12 @@ const featureSections: FeatureSection[] = [
     subtitle: "osservare lontano",
     description:
       "La notte è un territorio da esplorare. Nell’astrofotografia cerco la bellezza lontana delle stelle e la precisione del tempo che le accompagna.",
-    image:
-      "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?q=80&w=1080&auto=format&fit=crop",
+    photo: photoById("photo28"),
     align: "left",
   },
 ];
 
-const galleryItems: GalleryItem[] = [
-  {
-    title: "Nebbia blu",
-    image:
-      "https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Linee parallele",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Sentiero verde",
-    image:
-      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Onda statica",
-    image:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Dettagli metallici",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Luce d'inverno",
-    image:
-      "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Frame analogico",
-    image:
-      "https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Nebbia blu",
-    image:
-      "https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Linee parallele",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Sentiero verde",
-    image:
-      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Onda statica",
-    image:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Dettagli metallici",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Luce d'inverno",
-    image:
-      "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Frame analogico",
-    image:
-      "https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Nebbia blu",
-    image:
-      "https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Linee parallele",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Sentiero verde",
-    image:
-      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Onda statica",
-    image:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Dettagli metallici",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Luce d'inverno",
-    image:
-      "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Frame analogico",
-    image:
-      "https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Dettagli metallici",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Luce d'inverno",
-    image:
-      "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Frame analogico",
-    image:
-      "https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    title: "Dettagli metallici",
-    image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=900&auto=format&fit=crop",
-  },
-];
+const galleryItems: GalleryItem[] = [...sitePhotoCollection];
 
 const storiesContainer = "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8";
 const galleryContainer = "mx-auto w-full max-w-[2048px] px-4 sm:px-6 lg:px-8";
@@ -246,7 +113,7 @@ const GalleryCard = ({ item, onSelect }: GalleryCardProps) => {
       <div className="absolute inset-0 rounded bg-gradient-to-br from-white/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-40" />
       <Image
         src={item.image}
-        alt={item.title}
+        alt={item.alt}
         fill
         sizes="(max-width: 1024px) 50vw, 20vw"
         className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
@@ -264,7 +131,6 @@ const GalleryCard = ({ item, onSelect }: GalleryCardProps) => {
 
 const PortfolioPage = () => {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
-
   useEffect(() => {
     if (!selectedItem) return;
 
@@ -362,8 +228,8 @@ const PortfolioPage = () => {
                 >
                   <div className="relative aspect-square w-[400px] overflow-hidden rounded border border-white bg-white/5 shadow-xl shadow-black/25">
                     <Image
-                      src={section.image}
-                      alt={section.title}
+                      src={section.photo.image}
+                      alt={section.photo.alt}
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, 50vw"
@@ -419,7 +285,7 @@ const PortfolioPage = () => {
           <div className="mt-16 grid gap-12 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
             {galleryItems.map((item) => (
               <GalleryCard
-                key={item.title}
+                key={item.id}
                 item={item}
                 onSelect={setSelectedItem}
               />
@@ -455,7 +321,7 @@ const PortfolioPage = () => {
                 <div className="relative flex-[0.7] min-h-[320px] w-full overflow-hidden rounded border border-white/10 bg-black/30">
                   <Image
                     src={selectedItem.image}
-                    alt={selectedItem.title}
+                    alt={selectedItem.alt}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 90vw, 700px"
@@ -474,7 +340,7 @@ const PortfolioPage = () => {
                       durante esplorazioni fotografiche senza commissioni. Mi
                       piace fermarmi sulle texture e sulle geometrie che
                       emergono quando la luce cambia, lasciando che
-                      l'inquadratura racconti da sola la sensazione del momento.
+                      l&apos;inquadratura racconti da sola la sensazione del momento.
                     </p>
                   </div>
                   <div>
@@ -494,3 +360,6 @@ const PortfolioPage = () => {
 };
 
 export default PortfolioPage;
+
+
+

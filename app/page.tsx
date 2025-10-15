@@ -2,20 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  motion,
-  useInView,
-  useMotionTemplate,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
 import { useMemo, useRef } from "react";
 import { NAV_ITEMS } from "@/components/site-header";
+import type { SitePhoto } from "@/resources/images/site-photos";
+import {
+  SITE_MAIN_PHOTO_ID,
+  sitePhotos as sitePhotoCollection,
+} from "@/resources/images/site-photos";
 
-type StagePhoto = {
+type StageLayout = {
   id: string;
-  src: string;
-  alt: string;
   sizeClass: string;
   initialOffset: { x: string; y: string };
   finalOffset: { x: string; y: string };
@@ -25,16 +22,13 @@ type StagePhoto = {
   zIndex?: string;
 };
 
-const featureImage = {
-  src: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=800&auto=format&fit=crop",
-  alt: "Ritratto in studio con luci soffuse",
+type StagePhoto = StageLayout & {
+  asset: SitePhoto;
 };
 
-const stagePhotos: StagePhoto[] = [
+const stageLayout: StageLayout[] = [
   {
     id: "main",
-    src: featureImage.src,
-    alt: featureImage.alt,
     sizeClass:
       "w-[80vw] h-[66vh] sm:w-[68vw] sm:h-[62vh] md:w-[44vw] md:h-[58vh] lg:w-[36vw] lg:h-[52vh]",
     initialOffset: { x: "0vw", y: "30vh" },
@@ -46,8 +40,6 @@ const stagePhotos: StagePhoto[] = [
   },
   {
     id: "top-left",
-    src: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=900&auto=format&fit=crop",
-    alt: "Ritratto editoriale con luce laterale",
     sizeClass:
       "w-[52vw] h-[24vh] sm:w-[38vw] sm:h-[26vh] md:w-[26vw] md:h-[28vh] lg:w-[31vw] lg:h-[27vh]",
     initialOffset: { x: "-90vw", y: "-60vh" },
@@ -57,8 +49,6 @@ const stagePhotos: StagePhoto[] = [
   },
   {
     id: "top-right",
-    src: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=900&auto=format&fit=crop",
-    alt: "Fashion campaign con tonalita calde",
     sizeClass:
       "w-[52vw] h-[24vh] sm:w-[38vw] sm:h-[26vh] md:w-[26vw] md:h-[28vh] lg:w-[31vw] lg:h-[27vh]",
     initialOffset: { x: "90vw", y: "-60vh" },
@@ -68,8 +58,6 @@ const stagePhotos: StagePhoto[] = [
   },
   {
     id: "left",
-    src: "https://images.unsplash.com/photo-1526313199968-70e399ffe791?q=80&w=900&auto=format&fit=crop",
-    alt: "Outdoor portrait con luce naturale",
     sizeClass:
       "w-[58vw] h-[30vh] sm:w-[42vw] sm:h-[32vh] md:w-[28vw] md:h-[38vh] lg:w-[31vw] lg:h-[38vh]",
     initialOffset: { x: "-100vw", y: "0vh" },
@@ -79,8 +67,6 @@ const stagePhotos: StagePhoto[] = [
   },
   {
     id: "right",
-    src: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=900&auto=format&fit=crop",
-    alt: "Scena urbana notturna",
     sizeClass:
       "w-[58vw] h-[30vh] sm:w-[42vw] sm:h-[32vh] md:w-[28vw] md:h-[38vh] lg:w-[31vw] lg:h-[38vh]",
     initialOffset: { x: "100vw", y: "0vh" },
@@ -90,8 +76,6 @@ const stagePhotos: StagePhoto[] = [
   },
   {
     id: "bottom-left",
-    src: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=900&auto=format&fit=crop",
-    alt: "Ritratto in esterno con luce calda",
     sizeClass:
       "w-[54vw] h-[28vh] sm:w-[40vw] sm:h-[30vh] md:w-[26vw] md:h-[32vh] lg:w-[31vw] lg:h-[24vh]",
     initialOffset: { x: "-80vw", y: "70vh" },
@@ -101,8 +85,6 @@ const stagePhotos: StagePhoto[] = [
   },
   {
     id: "bottom-right",
-    src: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop",
-    alt: "Reportage notturno urbano",
     sizeClass:
       "w-[54vw] h-[28vh] sm:w-[40vw] sm:h-[30vh] md:w-[26vw] md:h-[32vh] lg:w-[31vw] lg:h-[24vh]",
     initialOffset: { x: "80vw", y: "70vh" },
@@ -112,8 +94,6 @@ const stagePhotos: StagePhoto[] = [
   },
   {
     id: "top-center",
-    src: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop",
-    alt: "Still life con palette neutre",
     sizeClass:
       "w-[44vw] h-[20vh] sm:w-[30vw] sm:h-[22vh] md:w-[22vw] md:h-[24vh] lg:w-[36vw] lg:h-[15vh]",
     initialOffset: { x: "0vw", y: "-90vh" },
@@ -124,8 +104,6 @@ const stagePhotos: StagePhoto[] = [
   },
   {
     id: "bottom-center",
-    src: "https://images.unsplash.com/photo-1468421870903-4df1664ac249?q=80&w=900&auto=format&fit=crop",
-    alt: "Paesaggio montano al tramonto",
     sizeClass:
       "w-[44vw] h-[22vh] sm:w-[30vw] sm:h-[24vh] md:w-[22vw] md:h-[26vh] lg:w-[36vw] lg:h-[22vh]",
     initialOffset: { x: "0vw", y: "90vh" },
@@ -136,33 +114,51 @@ const stagePhotos: StagePhoto[] = [
   },
 ];
 
-const mosaicImages = [
-  ...stagePhotos.map((photo) => photo.src),
-  "https://images.unsplash.com/photo-1516575150278-77136aed6920?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1468421870903-4df1664ac249?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1496307653780-42ee777d4833?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1516575150278-77136aed6920?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1468421870903-4df1664ac249?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1496307653780-42ee777d4833?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=900&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=900&auto=format&fit=crop",
-];
+const shuffleArray = <T,>(items: T[]): T[] => {
+  const array = [...items];
+  for (let index = array.length - 1; index > 0; index -= 1) {
+    const randIndex = Math.floor(Math.random() * (index + 1));
+    [array[index], array[randIndex]] = [array[randIndex], array[index]];
+  }
+  return array;
+};
+
+type HomePhotoSets = {
+  stagePhotos: StagePhoto[];
+  trailingPhotos: SitePhoto[];
+};
+
+// Produce randomized home photo sets while keeping the primary frame fixed.
+const buildHomePhotoSets = (): HomePhotoSets => {
+  const mainPhoto =
+    sitePhotoCollection.find((photo) => photo.id === SITE_MAIN_PHOTO_ID) ??
+    sitePhotoCollection[0];
+
+  const remainingPool = shuffleArray(
+    sitePhotoCollection.filter((photo) => photo.id !== mainPhoto.id)
+  );
+
+  const stagePhotos = stageLayout.map((layout) => {
+    const asset =
+      layout.id === "main"
+        ? mainPhoto
+        : remainingPool.shift() ?? mainPhoto;
+
+    return {
+      ...layout,
+      asset,
+    };
+  });
+
+  const usedIds = new Set(stagePhotos.map((item) => item.asset.id));
+  const trailingPhotos = shuffleArray(
+    sitePhotoCollection.filter((photo) => !usedIds.has(photo.id))
+  );
+  return {
+    stagePhotos,
+    trailingPhotos,
+  };
+};
 
 const StagePhotoCard = ({
   progress,
@@ -172,14 +168,13 @@ const StagePhotoCard = ({
   photo: StagePhoto;
 }) => {
   const {
+    asset,
     enterRange,
     initialScale,
     finalScale = 1,
     initialOffset,
     finalOffset,
     sizeClass,
-    src,
-    alt,
     zIndex,
   } = photo;
   const appearStart = Math.max(0, enterRange[0] - 0.08);
@@ -229,8 +224,8 @@ const StagePhotoCard = ({
       }`}
     >
       <Image
-        src={src}
-        alt={alt}
+        src={asset.image}
+        alt={asset.alt}
         fill
         sizes="(max-width: 768px) 80vw, 30vw"
         className="object-cover"
@@ -240,29 +235,6 @@ const StagePhotoCard = ({
   );
 };
 
-const MosaicGrid = ({ className = "" }: { className?: string }) => (
-  <div
-    className={`grid w-full grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 ${className}`}
-  >
-    {mosaicImages.slice(0, 8).map((src, index) => (
-      <div
-        key={src}
-        className={`relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 ${
-          index % 3 === 0 ? "md:col-span-2 md:row-span-2" : ""
-        }`}
-      >
-        <Image
-          src={src}
-          alt={`Anteprima portfolio ${index + 1}`}
-          fill
-          sizes="(max-width: 768px) 50vw, 20vw"
-          className="object-cover"
-        />
-      </div>
-    ))}
-  </div>
-);
-
 const HomePage = () => {
   const transitionRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
@@ -270,8 +242,8 @@ const HomePage = () => {
     offset: ["start start", "end end"],
   });
 
-  const trailingImages = useMemo(
-    () => mosaicImages.slice(stagePhotos.length),
+  const { stagePhotos, trailingPhotos } = useMemo(
+    () => buildHomePhotoSets(),
     []
   );
 
@@ -343,9 +315,9 @@ const HomePage = () => {
       <section className="px-0 pb-32">
         <div className="flex w-full flex-col gap-12 p-3">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {trailingImages.map((src, index) => (
+            {trailingPhotos.map((photo, index) => (
               <motion.div
-                key={`${src}-${index}`}
+                key={photo.id}
                 className={`relative aspect-[4/3] overflow-hidden rounded-lg border border-white/10 ${
                   index % 7 === 0 ? "md:col-span-2 md:row-span-2" : ""
                 }`}
@@ -359,8 +331,8 @@ const HomePage = () => {
                 }}
               >
                 <Image
-                  src={src}
-                  alt={`Galleria portfolio ${index + 1}`}
+                  src={photo.image}
+                  alt={photo.alt}
                   fill
                   sizes="(max-width: 768px) 50vw, 20vw"
                   className="object-cover"
@@ -375,3 +347,5 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
