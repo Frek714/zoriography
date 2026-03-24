@@ -133,7 +133,6 @@ const GalleryCard = ({ item, onSelect }: GalleryCardProps) => {
         className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
         loading="lazy"
         placeholder="blur"
-        unoptimized
       />
       <div className="absolute inset-0 rounded bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <span

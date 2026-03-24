@@ -262,7 +262,6 @@ const StagePhotoCard = ({
           priority={isMainPhoto}
           placeholder="blur"
           quality={isMainPhoto ? 82 : 76}
-          unoptimized={!isMainPhoto}
         />
       ) : null}
     </motion.div>
@@ -381,7 +380,6 @@ const HomePage = () => {
                   loading="lazy"
                   placeholder="blur"
                   quality={isLargeCard ? 82 : 76}
-                  unoptimized={!isLargeCard}
                 />
                 </motion.div>
               );
