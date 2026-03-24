@@ -37,23 +37,39 @@ const SiteHeader = () => {
       return;
     }
 
-    const sentinel = document.getElementById("header-hero-sentinel");
-    if (!sentinel) {
-      setHeroInView(false);
-      return;
-    }
+    let animationFrame = 0;
+    let observer: IntersectionObserver | null = null;
+    let attempts = 0;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        setHeroInView(entry?.isIntersecting ?? false);
-      },
-      { threshold: 0.25 }
-    );
+    const attachObserver = () => {
+      const sentinel = document.getElementById("header-hero-sentinel");
+      if (!sentinel) {
+        if (attempts >= 60) {
+          setHeroInView(false);
+          return;
+        }
+        attempts += 1;
+        animationFrame = window.requestAnimationFrame(attachObserver);
+        return;
+      }
 
-    observer.observe(sentinel);
+      observer = new IntersectionObserver(
+        (entries) => {
+          const [entry] = entries;
+          setHeroInView(entry?.isIntersecting ?? false);
+        },
+        { threshold: 0.25 }
+      );
 
-    return () => observer.disconnect();
+      observer.observe(sentinel);
+    };
+
+    attachObserver();
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      observer?.disconnect();
+    };
   }, [pathname, isHeroDriven]);
 
   const shouldBeTransparent = isHeroDriven && heroInView;
@@ -63,6 +79,7 @@ const SiteHeader = () => {
 
   return (
     <motion.header
+      key={isHome ? "site-header-home" : "site-header-page"}
       id="site-header"
       style={isHome ? { opacity: headerOpacity } : { opacity: 1 }}
       className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-500 pointer-events-none ${

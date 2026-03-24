@@ -3,35 +3,37 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import heroImage from "@/resources/images/wave-haikei-edit-2.png";
+import heroImage from "@/resources/images/wave-haikei-edit-2.webp";
+import instagramImage from "@/resources/images/me.webp";
+import behanceImage from "@/resources/images/site-photos-thumb/photo31.webp";
+import channelPlaceholderImage from "@/resources/images/site-photos-thumb/photo73.webp";
 
 const socialCards = [
   {
     title: "Instagram",
     description:
       "Dietro le quinte, storie quotidiane e anteprime dei progetti in corso.",
-    href: "https://www.instagram.com/zoriography",
+    href: "https://www.instagram.com/zoriography/",
     linkLabel: "Seguimi su Instagram",
-    image:
-      "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1080&auto=format&fit=crop",
+    image: instagramImage,
+    imageAlt: "Fotografo di spalle davanti a una montagna autunnale",
+    imageClassName: "object-cover object-[center_58%]",
   },
   {
     title: "Behance",
     description:
       "Case study completi e serie fotografiche curate in ogni dettaglio.",
-    href: "https://www.behance.net/",
+    href: "https://www.behance.net/federicodursi",
     linkLabel: "Guarda su Behance",
-    image:
-      "https://images.unsplash.com/photo-1529338296731-c4280a44fc47?q=80&w=1080&auto=format&fit=crop",
+    image: behanceImage,
+    imageAlt: "Paesaggio notturno con cielo stellato e una torre in primo piano",
   },
   {
-    title: "YouTube",
+    title: "Nuovo canale",
     description:
-      "Video diary di viaggio, setup e riflessioni sul mio metodo di lavoro.",
-    href: "https://www.youtube.com/",
-    linkLabel: "Iscriviti al canale",
-    image:
-      "https://images.unsplash.com/photo-1475724017904-b712052c192a?q=80&w=1080&auto=format&fit=crop",
+      "Sto valutando quale piattaforma affiancare a Instagram e Behance senza aprire un canale che poi resti fermo.",
+    image: channelPlaceholderImage,
+    imageAlt: "Persona che cammina in una stazione metropolitana illuminata",
   },
 ];
 
@@ -63,7 +65,9 @@ const ContactPage = () => (
         alt="Texture astratta con onde per il portfolio"
         fill
         priority
+        sizes="100vw"
         className="object-cover"
+        quality={95}
       />
       {/* <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/90" /> */}
       <div className="relative flex h-full flex-col items-center justify-center px-6 pt-0 text-center sm:px-10">
@@ -119,10 +123,12 @@ const ContactPage = () => (
             <div className="relative h-64 w-full overflow-hidden">
               <Image
                 src={card.image}
-                alt={card.title}
+                alt={card.imageAlt}
                 fill
                 sizes="(max-width: 1024px) 100vw, 33vw"
-                className="object-cover"
+                className={card.imageClassName ?? "object-cover"}
+                placeholder="blur"
+                quality={80}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent" />
               <span className="absolute left-5 bottom-4 text-xs uppercase tracking-[0.3em] text-white/80">
@@ -133,14 +139,20 @@ const ContactPage = () => (
               <p className="text-sm leading-relaxed text-white/70">
                 {card.description}
               </p>
-              <Link
-                href={card.href}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-auto pt-6 inline-flex items-center text-sm font-medium uppercase tracking-[0.3em] text-brand-light transition hover:text-white"
-              >
-                {card.linkLabel}
-              </Link>
+              {card.href && card.linkLabel ? (
+                <Link
+                  href={card.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-auto pt-6 inline-flex items-center text-sm font-medium uppercase tracking-[0.3em] text-brand-light transition hover:text-white"
+                >
+                  {card.linkLabel}
+                </Link>
+              ) : (
+                <span className="mt-auto pt-6 inline-flex items-center text-sm font-medium uppercase tracking-[0.3em] text-white/35">
+                  In definizione
+                </span>
+              )}
             </div>
           </motion.article>
         ))}
@@ -174,7 +186,7 @@ const ContactPage = () => (
           transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1], delay: 0.16 }}
           className="mt-4 text-base leading-relaxed text-white/70"
         >
-          Scrivimi una email, mandami un messaggio su Instagram o chiamami.
+          Scrivimi una email, mandami un messaggio su Instagram o su WhatsApp.
           Sar&ograve; felice di risponderti il prima possibile. <br />
           Se posso esserti utile in qualche modo, lo far&ograve; con piacere.
         </motion.p>

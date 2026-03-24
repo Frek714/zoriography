@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import heroImage from "@/resources/images/wave-haikei-edit-2.png";
+import heroImage from "@/resources/images/wave-haikei-edit-2.webp";
 
 const editions = [
   {
@@ -82,6 +82,13 @@ const ctaLinks = [
   }
 ];
 
+const ctaLinksTemp = [
+  {
+    label: "Contattami",
+    href: "mailto:hello@zoriography.com?subject=Richiesta%20info%20acquisto%20fotografie"
+  }
+];
+
 const containerClass = "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8";
 
 const PurchasePage = () => (
@@ -92,7 +99,9 @@ const PurchasePage = () => (
         alt="Texture astratta con onde"
         fill
         priority
+        sizes="100vw"
         className="object-cover"
+        quality={95}
       />
       <div className="relative flex h-full flex-col items-center justify-center px-6 text-center sm:px-10">
         <motion.p
@@ -129,7 +138,50 @@ const PurchasePage = () => (
       />
     </section>
 
-    <section className="z-10 mt-72">
+
+{/* SEZIONE "PROSSIMAMENTE" PROVVISORIA */}
+    <section className="mt-24">
+      <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+          className="font-display text-4xl text-brand-light"
+        >
+          Prossimamente Online
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1], delay: 0.1 }}
+          className="mt-6 text-base leading-relaxed text-white/70"
+        >
+          Mi sto organizzando per offrire una selezione curata di stampe fine art e licenze digitali.<br />
+          Nel frattempo, se sei interessato a ricevere informazioni o a prenotare una consulenza, non esitare a contattarmi.<br /><br />
+          Questa sezione sarà presto online con tutte le opzioni disponibili per poter acquistare le immagini che ti piacciono di più di Zoriography.
+        </motion.p>
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-6">
+          {ctaLinksTemp.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              target={link.href.startsWith("http") ? "_blank" : undefined}
+              rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+              className="rounded-full border border-brand px-8 py-3 text-sm uppercase tracking-[0.3em] text-brand-light transition hover:border-white hover:text-white"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+
+
+
+{/* TODO SEZIONE "ACQUISTA" DA SVILUPPARE */}
+    {/* <section className="z-10 mt-72">
       <div className={`${containerClass} grid gap-10 md:grid-cols-3`}>
         {editions.map((edition, index) => (
           <motion.article
@@ -253,7 +305,7 @@ const PurchasePage = () => (
           ))}
         </div>
       </div>
-    </section>
+    </section> */}
   </div>
 );
 

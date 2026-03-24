@@ -4,7 +4,7 @@ import Image from "next/image";
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
-import heroImage from "@/resources/images/wave-haikei-edit-2.png";
+import heroImage from "@/resources/images/wave-haikei-edit-2.webp";
 import type { SitePhoto } from "@/resources/images/site-photos";
 import { sitePhotos as sitePhotoCollection } from "@/resources/images/site-photos";
 
@@ -60,7 +60,7 @@ const featureSections: FeatureSection[] = [
     subtitle: "osservare lontano",
     description:
       "La notte è un territorio da esplorare. Nell’astrofotografia cerco la bellezza lontana delle stelle e la precisione del tempo che le accompagna.",
-    photo: photoById("photo28"),
+    photo: photoById("photo27"),
     align: "left",
   },
 ];
@@ -69,6 +69,18 @@ const galleryItems: GalleryItem[] = [...sitePhotoCollection];
 
 const storiesContainer = "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8";
 const galleryContainer = "mx-auto w-full max-w-[2048px] px-4 sm:px-6 lg:px-8";
+const warmedGalleryItems = new Set<string>();
+
+const warmGalleryItem = (item: GalleryItem) => {
+  if (typeof window === "undefined" || warmedGalleryItems.has(item.id)) {
+    return;
+  }
+
+  warmedGalleryItems.add(item.id);
+  const preloadImage = new window.Image();
+  preloadImage.decoding = "async";
+  preloadImage.src = item.image.src;
+};
 
 type GalleryCardProps = {
   item: GalleryItem;
@@ -101,6 +113,8 @@ const GalleryCard = ({ item, onSelect }: GalleryCardProps) => {
     <motion.button
       type="button"
       onClick={() => onSelect(item)}
+      onMouseEnter={() => warmGalleryItem(item)}
+      onFocus={() => warmGalleryItem(item)}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className="group relative aspect-square overflow-hidden rounded border border-white p-0 text-left shadow-lg shadow-black/20 transition-colors"
@@ -112,11 +126,14 @@ const GalleryCard = ({ item, onSelect }: GalleryCardProps) => {
     >
       <div className="absolute inset-0 rounded bg-gradient-to-br from-white/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-40" />
       <Image
-        src={item.image}
+        src={item.thumb}
         alt={item.alt}
         fill
-        sizes="(max-width: 1024px) 50vw, 20vw"
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 25vw, 20vw"
         className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+        loading="lazy"
+        placeholder="blur"
+        unoptimized
       />
       <div className="absolute inset-0 rounded bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <span
@@ -167,7 +184,9 @@ const PortfolioPage = () => {
           alt="Texture astratta con onde per il portfolio"
           fill
           priority
+          sizes="100vw"
           className="object-cover"
+          quality={95}
         />
         {/* <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/90" /> */}
         <div className="relative flex h-full flex-col items-center justify-center px-6 pt-0 text-center sm:px-10">
@@ -232,7 +251,10 @@ const PortfolioPage = () => {
                       alt={section.photo.alt}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 50vw"
+                      sizes="(max-width: 768px) 92vw, (max-width: 1280px) 50vw, 400px"
+                      loading="lazy"
+                      placeholder="blur"
+                      quality={84}
                     />
                   </div>
                 </div>
@@ -315,19 +337,24 @@ const PortfolioPage = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", stiffness: 220, damping: 24 }}
-              className="relative w-[80vw] h-[80vh]"
+              className="relative h-[min(88vh,980px)] w-[min(94vw,1500px)]"
             >
-              <div className="flex h-full flex-col gap-10 overflow-hidden rounded border border-white/10 bg-black/70 p-8 text-left text-white md:flex-row md:gap-14 md:p-6">
-                <div className="relative flex-[0.7] min-h-[320px] w-full overflow-hidden rounded border border-white/10 bg-black/30">
-                  <Image
-                    src={selectedItem.image}
-                    alt={selectedItem.alt}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 90vw, 700px"
-                  />
+              <div className="flex h-full flex-col gap-8 overflow-hidden rounded border border-white/10 bg-black/70 p-4 text-left text-white md:flex-row md:gap-8 md:p-6">
+                <div className="flex min-h-[42vh] w-full flex-[0.72] items-center justify-center overflow-hidden rounded border border-white/10 bg-black/35 p-3 md:min-h-0 md:p-4">
+                  <div className="relative h-full w-full">
+                    <Image
+                      src={selectedItem.image}
+                      alt={selectedItem.alt}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 92vw, (max-width: 1400px) 68vw, 1280px"
+                      priority
+                      placeholder="blur"
+                      quality={88}
+                    />
+                  </div>
                 </div>
-                <div className="flex w-full flex-[0.3] flex-col justify-between mt-6">
+                <div className="mt-2 flex w-full flex-[0.28] flex-col justify-between overflow-y-auto md:mt-0">
                   <div>
                     <p className="text-xs uppercase tracking-[0.4em] text-white/60">
                       Frame selezionato
@@ -336,11 +363,7 @@ const PortfolioPage = () => {
                       {selectedItem.title}
                     </h3>
                     <p className="mt-20 text-sm leading-relaxed text-white/80">
-                      Scatto appartenente alla mia collezione personale, nato
-                      durante esplorazioni fotografiche senza commissioni. Mi
-                      piace fermarmi sulle texture e sulle geometrie che
-                      emergono quando la luce cambia, lasciando che
-                      l&apos;inquadratura racconti da sola la sensazione del momento.
+                      {selectedItem.description}
                     </p>
                   </div>
                   <div>
@@ -360,6 +383,3 @@ const PortfolioPage = () => {
 };
 
 export default PortfolioPage;
-
-
-
