@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useEffect } from "react";
-import Lenis from "@studio-freight/lenis";
+import Lenis from "lenis";
 
 type SmoothScrollProviderProps = {
   children: ReactNode;
@@ -11,8 +11,7 @@ const SmoothScrollProvider = ({ children }: SmoothScrollProviderProps) => {
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
-      smoothWheel: true,
-      smoothTouch: false
+      smoothWheel: true
     });
 
     let animationFrame = requestAnimationFrame(raf);

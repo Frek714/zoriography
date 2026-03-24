@@ -2,6 +2,12 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import meImage from "@/resources/images/me.jpg";
+import natureImage from "@/resources/images/site-photos-thumb/photo5.webp";
+import landscapeImage from "@/resources/images/site-photos-thumb/photo1.webp";
+import wildlifeImage from "@/resources/images/site-photos-thumb/photo9.webp";
+import travelImage from "@/resources/images/site-photos-thumb/photo73.webp";
+import astrophotographyImage from "@/resources/images/site-photos-thumb/photo31.webp";
 
 const timeline = [
   {
@@ -29,36 +35,31 @@ const offerings = [
     title: "Natura",
     description:
       "La fotografia naturalistica è il punto di partenza del mio percorso. Mi piace raccontare la forza e la calma della natura nei suoi dettagli più semplici.",
-    image:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1080&auto=format&fit=crop",
+    image: natureImage,
   },
   {
     title: "Paesaggistica",
     description:
       "Nei paesaggi cerco equilibrio, profondità e luce. Ogni luogo ha un ritmo diverso, e fotografarlo significa imparare ad ascoltarlo.",
-    image:
-      "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1080&auto=format&fit=crop",
+    image: landscapeImage,
   },
   {
     title: "Wildlife",
     description:
       "Mi affascina la vita selvatica e l’imprevedibilità dei suoi momenti. Ogni scatto è il risultato di pazienza, rispetto e attenzione.",
-    image:
-      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1080&auto=format&fit=crop",
+    image: wildlifeImage,
   },
   {
     title: "Viaggi",
     description:
       "Nei viaggi trovo nuovi modi di guardare. Mi interessa cogliere la luce, le persone e le atmosfere che rendono unico ogni posto.",
-    image:
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1080&auto=format&fit=crop",
+    image: travelImage,
   },
   {
     title: "Astrofotografia",
     description:
       "La notte è un territorio da esplorare. Nell’astrofotografia cerco la bellezza lontana delle stelle e la precisione del tempo che le accompagna.",
-    image:
-      "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?q=80&w=1080&auto=format&fit=crop",
+    image: astrophotographyImage,
   },
 ];
 
@@ -81,7 +82,7 @@ const gearList = [
   {
     name: "SkyWatcher 200/800 f/3.9",
     description:
-      "Il mio compagno affidabile quando punto il cielo, con la montatura equatoriale Skywatcher AzEq 6-Gt registro nebulose e galassie che non vedrei a occhio nudo. A volte ossero anche senza scattare",
+      "Il mio compagno affidabile quando punto il cielo, con la montatura equatoriale Skywatcher AzEq 6-Gt registro nebulose e galassie che non vedrei a occhio nudo. A volte osservo anche senza scattare",
   },
 ];
 
@@ -146,10 +147,13 @@ const AboutPage = () => (
         transition={{ duration: 0.7, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
       >
         <Image
-          src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=920&auto=format&fit=crop"
-          alt="Ritratto della fotografa Zoe Ricci in studio"
+          src={meImage}
+          alt="Fotografo di spalle davanti a una montagna autunnale"
           fill
           className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 40vw, 32vw"
+          priority
+          quality={82}
         />
       </motion.div>
     </div>
@@ -215,15 +219,17 @@ const AboutPage = () => (
         viewport={{ once: true, amount: 0.2 }}
         className="grid gap-10 lg:grid-cols-2 lg:items-start"
       >
-        <div className="space-y-6">
+        <div className="space-y-1 col-span-2">
           <p className="text-sm uppercase tracking-[0.4em] text-white/40">
-            Dietro l'obiettivo
+            Dietro l&apos;obiettivo
           </p>
           <h2 className="font-display text-3xl text-brand-light tracking-[0.08em] uppercase">
             Una fotografia che nasce dal tempo libero
           </h2>
-          <p className="text-base leading-relaxed text-white/70 tracking-[0.05em]">
-            Scatto per passione, non per commissione. La macchina fotografica mi
+        </div>
+          <div className="space-y-6 col-span-1 mt-3">
+            <p className="text-base leading-relaxed text-white/70 tracking-[0.05em]">
+            Scatto per passione, la fotografia è nata come hobby. La macchina fotografica mi
             segue nei fine settimana, nei viaggi lenti e nelle passeggiate senza
             meta: &egrave; il mio modo di ricordare le sensazioni che mi fanno
             stare bene.
@@ -231,11 +237,11 @@ const AboutPage = () => (
           <p className="text-base leading-relaxed text-white/70 tracking-[0.05em]">
             Amo la luce naturale e i momenti di quiete, i dettagli che spesso
             passano inosservati. Ogni sessione nasce dalla curiosit&agrave; e
-            dall'esigenza di raccontare il mio punto di vista, anche quando la
+            dall&apos;esigenza di raccontare il mio punto di vista, anche quando la
             storia &egrave; fatta solo di piccoli gesti quotidiani.
           </p>
-        </div>
-        <div className="space-y-6 rounded-lg border border-white/10 bg-white/5 p-8 backdrop-blur-sm mt-8">
+          </div>
+          <div className="space-y-6 rounded-lg border border-white/10 bg-white/5 p-5 backdrop-blur-sm col-">
           <p className="text-sm uppercase tracking-[0.3em] text-white/40">
             Piccole ispirazioni
           </p>
@@ -244,7 +250,7 @@ const AboutPage = () => (
               - Le mia musica preferia nelle cuffie mentre sviluppo gli scatti.
             </li>
             <li>
-              - L'Amore per gli animali e per la natura mi danno lo spunto per
+              - L&apos;Amore per gli animali e per la natura mi danno lo spunto per
               immortalarli.
             </li>
             <li>
@@ -252,7 +258,7 @@ const AboutPage = () => (
               ispirazione.
             </li>
             <li>
-              - La passione per l'astronomia e per l'infinito e l'ignoto che
+              - La passione per l&apos;astronomia e per l&apos;infinito e l&apos;ignoto che
               circonda il nostro piccolo mondo.
             </li>
           </ul>
@@ -276,7 +282,7 @@ const AboutPage = () => (
         <p className="mt-6 text-base leading-relaxed text-white/70 tracking-[0.05em] max-w-3xl">
           Non ho un setup infinito, ma pochi strumenti scelti per
           affidabilit&agrave;. Mi piace conoscerli bene e spingerli oltre il
-          quotidiano, senza rincorrere l'ultima novit&agrave; tecnologica.
+          quotidiano, senza rincorrere l&apos;ultima novit&agrave; tecnologica.
         </p>
         <p className="mt-6 text-base leading-relaxed text-white/70 tracking-[0.05em] max-w-3xl">
           Non è tutto. ho altra strumentazione, ma questa &egrave; quella che

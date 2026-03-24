@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
-import { useMemo, useRef } from "react";
+import { motion, useMotionTemplate, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { NAV_ITEMS } from "@/components/site-header";
 import type { SitePhoto } from "@/resources/images/site-photos";
 import {
@@ -114,35 +114,39 @@ const stageLayout: StageLayout[] = [
   },
 ];
 
-const shuffleArray = <T,>(items: T[]): T[] => {
-  const array = [...items];
-  for (let index = array.length - 1; index > 0; index -= 1) {
-    const randIndex = Math.floor(Math.random() * (index + 1));
-    [array[index], array[randIndex]] = [array[randIndex], array[index]];
-  }
-  return array;
-};
+const HOME_PRIORITY_LIMIT = 27;
 
 type HomePhotoSets = {
   stagePhotos: StagePhoto[];
   trailingPhotos: SitePhoto[];
 };
 
-// Produce randomized home photo sets while keeping the primary frame fixed.
+// Produce deterministic home photo sets prioritising the first 28 frames.
 const buildHomePhotoSets = (): HomePhotoSets => {
   const mainPhoto =
     sitePhotoCollection.find((photo) => photo.id === SITE_MAIN_PHOTO_ID) ??
     sitePhotoCollection[0];
 
-  const remainingPool = shuffleArray(
-    sitePhotoCollection.filter((photo) => photo.id !== mainPhoto.id)
+  const nonMainPhotos = sitePhotoCollection.filter(
+    (photo) => photo.id !== mainPhoto.id
   );
+  const priorityPhotos = nonMainPhotos.filter((photo) => {
+    const index = Number.parseInt(photo.id.replace("photo", ""), 10);
+    return Number.isFinite(index) && index <= HOME_PRIORITY_LIMIT;
+  });
+  const remainingPhotos = nonMainPhotos.filter((photo) => {
+    const index = Number.parseInt(photo.id.replace("photo", ""), 10);
+    return !Number.isFinite(index) || index > HOME_PRIORITY_LIMIT;
+  });
+
+  const prioritizedPool = [...priorityPhotos];
+  const fallbackPool = [...remainingPhotos];
 
   const stagePhotos = stageLayout.map((layout) => {
     const asset =
       layout.id === "main"
         ? mainPhoto
-        : remainingPool.shift() ?? mainPhoto;
+        : prioritizedPool.shift() ?? fallbackPool.shift() ?? mainPhoto;
 
     return {
       ...layout,
@@ -151,9 +155,12 @@ const buildHomePhotoSets = (): HomePhotoSets => {
   });
 
   const usedIds = new Set(stagePhotos.map((item) => item.asset.id));
-  const trailingPhotos = shuffleArray(
-    sitePhotoCollection.filter((photo) => !usedIds.has(photo.id))
+  const trailingSource =
+    prioritizedPool.length > 0 ? prioritizedPool : fallbackPool;
+  const trailingPhotos = trailingSource.filter(
+    (photo) => !usedIds.has(photo.id)
   );
+
   return {
     stagePhotos,
     trailingPhotos,
@@ -177,8 +184,29 @@ const StagePhotoCard = ({
     sizeClass,
     zIndex,
   } = photo;
+  const isMainPhoto = photo.id === "main";
   const appearStart = Math.max(0, enterRange[0] - 0.08);
   const appearEnd = enterRange[1];
+  const loadActivationPoint = Math.max(0, appearStart - 0.08);
+  const [shouldLoad, setShouldLoad] = useState(isMainPhoto);
+  const stageImage = asset.image;
+  const stageSizes = isMainPhoto
+    ? "(max-width: 768px) 80vw, (max-width: 1280px) 44vw, 36vw"
+    : "(max-width: 768px) 52vw, (max-width: 1280px) 28vw, 31vw";
+
+  useEffect(() => {
+    if (shouldLoad) return;
+    if (progress.get() >= loadActivationPoint) {
+      setShouldLoad(true);
+    }
+  }, [shouldLoad, loadActivationPoint, progress]);
+
+  useMotionValueEvent(progress, "change", (value) => {
+    if (shouldLoad) return;
+    if (value >= loadActivationPoint) {
+      setShouldLoad(true);
+    }
+  });
 
   const opacity = useTransform(
     progress,
@@ -212,8 +240,8 @@ const StagePhotoCard = ({
     ["0px 0px 0px rgba(0,0,0,0)", "0px 40px 120px rgba(0,0,0,0.45)"]
   );
 
-  const borderRadius = photo.id === "main" ? borderRadiusProgress : undefined;
-  const boxShadow = photo.id === "main" ? boxShadowProgress : undefined;
+  const borderRadius = isMainPhoto ? borderRadiusProgress : undefined;
+  const boxShadow = isMainPhoto ? boxShadowProgress : undefined;
 
   return (
     <motion.div
@@ -223,14 +251,20 @@ const StagePhotoCard = ({
         zIndex ?? "z-20"
       }`}
     >
-      <Image
-        src={asset.image}
-        alt={asset.alt}
-        fill
-        sizes="(max-width: 768px) 80vw, 30vw"
-        className="object-cover"
-        priority={photo.id === "main"}
-      />
+      {shouldLoad ? (
+        <Image
+          src={stageImage}
+          alt={asset.alt}
+          fill
+          sizes={stageSizes}
+          className="object-cover"
+          loading={isMainPhoto ? "eager" : "lazy"}
+          priority={isMainPhoto}
+          placeholder="blur"
+          quality={isMainPhoto ? 82 : 76}
+          unoptimized={!isMainPhoto}
+        />
+      ) : null}
     </motion.div>
   );
 };
@@ -315,30 +349,43 @@ const HomePage = () => {
       <section className="px-0 pb-32">
         <div className="flex w-full flex-col gap-12 p-3">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {trailingPhotos.map((photo, index) => (
-              <motion.div
-                key={photo.id}
-                className={`relative aspect-[4/3] overflow-hidden rounded-lg border border-white/10 ${
-                  index % 7 === 0 ? "md:col-span-2 md:row-span-2" : ""
-                }`}
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{
-                  duration: 0.8,
-                  delay: index * 0.05,
-                  ease: [0.23, 1, 0.32, 1],
-                }}
-              >
+            {trailingPhotos.map((photo, index) => {
+              const isLargeCard = index % 7 === 0;
+              const gridImage = isLargeCard ? photo.image : photo.thumb;
+
+              return (
+                <motion.div
+                  key={photo.id}
+                  className={`relative aspect-[4/3] overflow-hidden rounded-lg border border-white/10 ${
+                    isLargeCard ? "md:col-span-2 md:row-span-2" : ""
+                  }`}
+                  initial={{ opacity: 0, y: 60 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{
+                    duration: 0.8,
+                    delay: index * 0.05,
+                    ease: [0.23, 1, 0.32, 1],
+                  }}
+                >
                 <Image
-                  src={photo.image}
+                  src={gridImage}
                   alt={photo.alt}
                   fill
-                  sizes="(max-width: 768px) 50vw, 20vw"
+                  sizes={
+                      isLargeCard
+                        ? "(max-width: 768px) 100vw, (max-width: 1280px) 66vw, 50vw"
+                        : "(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                  }
                   className="object-cover"
+                  loading="lazy"
+                  placeholder="blur"
+                  quality={isLargeCard ? 82 : 76}
+                  unoptimized={!isLargeCard}
                 />
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -347,5 +394,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-
