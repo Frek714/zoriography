@@ -26,11 +26,13 @@ type StagePhoto = StageLayout & {
   asset: SitePhoto;
 };
 
+type StageBreakpoint = "mobile" | "tablet" | "desktop";
+
 const stageLayout: StageLayout[] = [
   {
     id: "main",
     sizeClass:
-      "w-[80vw] h-[66vh] sm:w-[68vw] sm:h-[62vh] md:w-[44vw] md:h-[58vh] lg:w-[36vw] lg:h-[52vh]",
+      "w-[42vw] h-[40vh] sm:w-[40vw] sm:h-[45vh] md:w-[36vw] md:h-[48vh] lg:w-[36vw] lg:h-[51vh]",
     initialOffset: { x: "0vw", y: "30vh" },
     finalOffset: { x: "0vw", y: "0vh" },
     enterRange: [0, 0.45],
@@ -41,63 +43,63 @@ const stageLayout: StageLayout[] = [
   {
     id: "top-left",
     sizeClass:
-      "w-[52vw] h-[24vh] sm:w-[38vw] sm:h-[26vh] md:w-[26vw] md:h-[28vh] lg:w-[31vw] lg:h-[27vh]",
+      "w-[24vw] h-[14vh] sm:w-[20vw] sm:h-[14vh] md:w-[16vw] md:h-[14vh] lg:w-[31vw] lg:h-[28vh]",
     initialOffset: { x: "-90vw", y: "-60vh" },
-    finalOffset: { x: "-34vw", y: "-29vh" },
+    finalOffset: { x: "-25vw", y: "-26vh" },
     enterRange: [0.18, 0.48],
     initialScale: 0.75,
   },
   {
     id: "top-right",
     sizeClass:
-      "w-[52vw] h-[24vh] sm:w-[38vw] sm:h-[26vh] md:w-[26vw] md:h-[28vh] lg:w-[31vw] lg:h-[27vh]",
+      "w-[24vw] h-[14vh] sm:w-[20vw] sm:h-[14vh] md:w-[16vw] md:h-[14vh] lg:w-[31vw] lg:h-[28vh]",
     initialOffset: { x: "90vw", y: "-60vh" },
-    finalOffset: { x: "34vw", y: "-29vh" },
+    finalOffset: { x: "25vw", y: "-26vh" },
     enterRange: [0.22, 0.5],
     initialScale: 0.75,
   },
   {
     id: "left",
     sizeClass:
-      "w-[58vw] h-[30vh] sm:w-[42vw] sm:h-[32vh] md:w-[28vw] md:h-[38vh] lg:w-[31vw] lg:h-[38vh]",
+      "w-[26vw] h-[20vh] sm:w-[22vw] sm:h-[21vh] md:w-[18vw] md:h-[22vh] lg:w-[31vw] lg:h-[31vh]",
     initialOffset: { x: "-100vw", y: "0vh" },
-    finalOffset: { x: "-34vw", y: "5vh" },
+    finalOffset: { x: "-27vw", y: "2vh" },
     enterRange: [0.28, 0.58],
     initialScale: 0.8,
   },
   {
     id: "right",
     sizeClass:
-      "w-[58vw] h-[30vh] sm:w-[42vw] sm:h-[32vh] md:w-[28vw] md:h-[38vh] lg:w-[31vw] lg:h-[38vh]",
+      "w-[26vw] h-[20vh] sm:w-[22vw] sm:h-[21vh] md:w-[18vw] md:h-[22vh] lg:w-[31vw] lg:h-[31vh]",
     initialOffset: { x: "100vw", y: "0vh" },
-    finalOffset: { x: "34vw", y: "5vh" },
+    finalOffset: { x: "27vw", y: "2vh" },
     enterRange: [0.32, 0.62],
     initialScale: 0.8,
   },
   {
     id: "bottom-left",
     sizeClass:
-      "w-[54vw] h-[28vh] sm:w-[40vw] sm:h-[30vh] md:w-[26vw] md:h-[32vh] lg:w-[31vw] lg:h-[24vh]",
+      "w-[24vw] h-[14vh] sm:w-[20vw] sm:h-[14vh] md:w-[16vw] md:h-[14vh] lg:w-[31vw] lg:h-[29vh]",
     initialOffset: { x: "-80vw", y: "70vh" },
-    finalOffset: { x: "-34vw", y: "37vh" },
+    finalOffset: { x: "-25vw", y: "28vh" },
     enterRange: [0.36, 0.66],
     initialScale: 0.8,
   },
   {
     id: "bottom-right",
     sizeClass:
-      "w-[54vw] h-[28vh] sm:w-[40vw] sm:h-[30vh] md:w-[26vw] md:h-[32vh] lg:w-[31vw] lg:h-[24vh]",
+      "w-[24vw] h-[14vh] sm:w-[20vw] sm:h-[14vh] md:w-[16vw] md:h-[14vh] lg:w-[31vw] lg:h-[29vh]",
     initialOffset: { x: "80vw", y: "70vh" },
-    finalOffset: { x: "34vw", y: "37vh" },
+    finalOffset: { x: "25vw", y: "28vh" },
     enterRange: [0.4, 0.7],
     initialScale: 0.8,
   },
   {
     id: "top-center",
     sizeClass:
-      "w-[44vw] h-[20vh] sm:w-[30vw] sm:h-[22vh] md:w-[22vw] md:h-[24vh] lg:w-[36vw] lg:h-[15vh]",
+      "w-[20vw] h-[11vh] sm:w-[16vw] sm:h-[11vh] md:w-[13vw] md:h-[11vh] lg:w-[36vw] lg:h-[18vh]",
     initialOffset: { x: "0vw", y: "-90vh" },
-    finalOffset: { x: "0vw", y: "-35vh" },
+    finalOffset: { x: "0vw", y: "-30vh" },
     enterRange: [0.24, 0.54],
     initialScale: 0.7,
     zIndex: "z-20",
@@ -105,14 +107,78 @@ const stageLayout: StageLayout[] = [
   {
     id: "bottom-center",
     sizeClass:
-      "w-[44vw] h-[22vh] sm:w-[30vw] sm:h-[24vh] md:w-[22vw] md:h-[26vh] lg:w-[36vw] lg:h-[22vh]",
+      "w-[20vw] h-[11vh] sm:w-[16vw] sm:h-[11vh] md:w-[13vw] md:h-[11vh] lg:w-[36vw] lg:h-[19vh]",
     initialOffset: { x: "0vw", y: "90vh" },
-    finalOffset: { x: "0vw", y: "38vh" },
+    finalOffset: { x: "0vw", y: "30vh" },
     enterRange: [0.44, 0.74],
     initialScale: 0.7,
     zIndex: "z-10",
   },
 ];
+
+type StageOffsetOverrides = {
+  initialOffset: { x: string; y: string };
+  finalOffset: { x: string; y: string };
+};
+
+const stageOffsetsByBreakpoint: Record<
+  StageBreakpoint,
+  Record<string, StageOffsetOverrides>
+> = {
+  mobile: {
+    main: { initialOffset: { x: "0vw", y: "24vh" }, finalOffset: { x: "0vw", y: "0vh" } },
+    "top-left": { initialOffset: { x: "-92vw", y: "-66vh" }, finalOffset: { x: "-31vw", y: "-27vh" } },
+    "top-right": { initialOffset: { x: "92vw", y: "-66vh" }, finalOffset: { x: "31vw", y: "-27vh" } },
+    left: { initialOffset: { x: "-104vw", y: "0vh" }, finalOffset: { x: "-35vw", y: "3vh" } },
+    right: { initialOffset: { x: "104vw", y: "0vh" }, finalOffset: { x: "35vw", y: "3vh" } },
+    "bottom-left": { initialOffset: { x: "-86vw", y: "72vh" }, finalOffset: { x: "-31vw", y: "28vh" } },
+    "bottom-right": { initialOffset: { x: "86vw", y: "72vh" }, finalOffset: { x: "31vw", y: "28vh" } },
+    "top-center": { initialOffset: { x: "0vw", y: "-95vh" }, finalOffset: { x: "0vw", y: "-30vh" } },
+    "bottom-center": { initialOffset: { x: "0vw", y: "95vh" }, finalOffset: { x: "0vw", y: "30vh" } },
+  },
+  tablet: {
+    main: { initialOffset: { x: "0vw", y: "28vh" }, finalOffset: { x: "0vw", y: "0vh" } },
+    "top-left": { initialOffset: { x: "-90vw", y: "-62vh" }, finalOffset: { x: "-28vw", y: "-27vh" } },
+    "top-right": { initialOffset: { x: "90vw", y: "-62vh" }, finalOffset: { x: "28vw", y: "-27vh" } },
+    left: { initialOffset: { x: "-104vw", y: "0vh" }, finalOffset: { x: "-31vw", y: "3vh" } },
+    right: { initialOffset: { x: "104vw", y: "0vh" }, finalOffset: { x: "31vw", y: "3vh" } },
+    "bottom-left": { initialOffset: { x: "-84vw", y: "72vh" }, finalOffset: { x: "-28vw", y: "29vh" } },
+    "bottom-right": { initialOffset: { x: "84vw", y: "72vh" }, finalOffset: { x: "28vw", y: "29vh" } },
+    "top-center": { initialOffset: { x: "0vw", y: "-92vh" }, finalOffset: { x: "0vw", y: "-31vh" } },
+    "bottom-center": { initialOffset: { x: "0vw", y: "92vh" }, finalOffset: { x: "0vw", y: "31vh" } },
+  },
+  desktop: {
+    main: { initialOffset: { x: "0vw", y: "30vh" }, finalOffset: { x: "0vw", y: "4vh" } },
+    "top-left": { initialOffset: { x: "-90vw", y: "-60vh" }, finalOffset: { x: "-34vw", y: "-26.5vh" } },
+    "top-right": { initialOffset: { x: "90vw", y: "-60vh" }, finalOffset: { x: "34vw", y: "-26.5vh" } },
+    left: { initialOffset: { x: "-100vw", y: "0vh" }, finalOffset: { x: "-34vw", y: "4vh" } },
+    right: { initialOffset: { x: "100vw", y: "0vh" }, finalOffset: { x: "34vw", y: "4vh" } },
+    "bottom-left": { initialOffset: { x: "-80vw", y: "70vh" }, finalOffset: { x: "-34vw", y: "35vh" } },
+    "bottom-right": { initialOffset: { x: "80vw", y: "70vh" }, finalOffset: { x: "34vw", y: "35vh" } },
+    "top-center": { initialOffset: { x: "0vw", y: "-90vh" }, finalOffset: { x: "0vw", y: "-31.5vh" } },
+    "bottom-center": { initialOffset: { x: "0vw", y: "90vh" }, finalOffset: { x: "0vw", y: "40vh" } },
+  },
+};
+
+const getStageBreakpoint = (viewportWidth: number): StageBreakpoint => {
+  if (viewportWidth < 640) return "mobile";
+  if (viewportWidth < 1024) return "tablet";
+  return "desktop";
+};
+
+const getResponsiveStageLayout = (breakpoint: StageBreakpoint): StageLayout[] => {
+  const overrides = stageOffsetsByBreakpoint[breakpoint];
+
+  return stageLayout.map((item) => {
+    const override = overrides[item.id];
+    if (!override) return item;
+    return {
+      ...item,
+      initialOffset: override.initialOffset,
+      finalOffset: override.finalOffset,
+    };
+  });
+};
 
 const HOME_PRIORITY_LIMIT = 27;
 
@@ -122,7 +188,7 @@ type HomePhotoSets = {
 };
 
 // Produce deterministic home photo sets prioritising the first 28 frames.
-const buildHomePhotoSets = (): HomePhotoSets => {
+const buildHomePhotoSets = (layout: StageLayout[]): HomePhotoSets => {
   const mainPhoto =
     sitePhotoCollection.find((photo) => photo.id === SITE_MAIN_PHOTO_ID) ??
     sitePhotoCollection[0];
@@ -142,14 +208,14 @@ const buildHomePhotoSets = (): HomePhotoSets => {
   const prioritizedPool = [...priorityPhotos];
   const fallbackPool = [...remainingPhotos];
 
-  const stagePhotos = stageLayout.map((layout) => {
+  const stagePhotos = layout.map((layoutItem) => {
     const asset =
-      layout.id === "main"
+      layoutItem.id === "main"
         ? mainPhoto
         : prioritizedPool.shift() ?? fallbackPool.shift() ?? mainPhoto;
 
     return {
-      ...layout,
+      ...layoutItem,
       asset,
     };
   });
@@ -169,9 +235,11 @@ const buildHomePhotoSets = (): HomePhotoSets => {
 
 const StagePhotoCard = ({
   progress,
+  stageBreakpoint,
   photo,
 }: {
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
+  stageBreakpoint: StageBreakpoint;
   photo: StagePhoto;
 }) => {
   const {
@@ -190,9 +258,14 @@ const StagePhotoCard = ({
   const loadActivationPoint = Math.max(0, appearStart - 0.08);
   const [shouldLoad, setShouldLoad] = useState(isMainPhoto);
   const stageImage = asset.image;
+  const stageSizesByBreakpoint: Record<StageBreakpoint, { main: string; secondary: string }> = {
+    mobile: { main: "42vw", secondary: "24vw" },
+    tablet: { main: "38vw", secondary: "20vw" },
+    desktop: { main: "32vw", secondary: "19vw" },
+  };
   const stageSizes = isMainPhoto
-    ? "(max-width: 768px) 80vw, (max-width: 1280px) 44vw, 36vw"
-    : "(max-width: 768px) 52vw, (max-width: 1280px) 28vw, 31vw";
+    ? stageSizesByBreakpoint[stageBreakpoint].main
+    : stageSizesByBreakpoint[stageBreakpoint].secondary;
 
   useEffect(() => {
     if (shouldLoad) return;
@@ -270,14 +343,36 @@ const StagePhotoCard = ({
 
 const HomePage = () => {
   const transitionRef = useRef<HTMLDivElement | null>(null);
+  const [stageBreakpoint, setStageBreakpoint] = useState<StageBreakpoint>("desktop");
   const { scrollYProgress } = useScroll({
     target: transitionRef,
     offset: ["start start", "end end"],
   });
 
+  useEffect(() => {
+    const syncBreakpoint = () => {
+      const nextBreakpoint = getStageBreakpoint(window.innerWidth);
+      setStageBreakpoint((currentBreakpoint) =>
+        currentBreakpoint === nextBreakpoint ? currentBreakpoint : nextBreakpoint
+      );
+    };
+
+    syncBreakpoint();
+    window.addEventListener("resize", syncBreakpoint);
+
+    return () => {
+      window.removeEventListener("resize", syncBreakpoint);
+    };
+  }, []);
+
+  const responsiveStageLayout = useMemo(
+    () => getResponsiveStageLayout(stageBreakpoint),
+    [stageBreakpoint]
+  );
+
   const { stagePhotos, trailingPhotos } = useMemo(
-    () => buildHomePhotoSets(),
-    []
+    () => buildHomePhotoSets(responsiveStageLayout),
+    [responsiveStageLayout]
   );
 
   return (
@@ -338,6 +433,7 @@ const HomePage = () => {
               <StagePhotoCard
                 key={photo.id}
                 progress={scrollYProgress}
+                stageBreakpoint={stageBreakpoint}
                 photo={photo}
               />
             ))}

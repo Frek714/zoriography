@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { useEffect, useState } from "react";
 
 export const NAV_ITEMS = [
@@ -21,10 +27,15 @@ const SiteHeader = () => {
   const { scrollYProgress } = useScroll();
   const headerOpacity = useTransform(scrollYProgress, [0, 0.08, 0.18], [0, 0, 1]);
   const [isInteractive, setIsInteractive] = useState(!isHome);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setIsInteractive(!isHome);
   }, [isHome]);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   useMotionValueEvent(scrollYProgress, "change", (value) => {
     if (!isHome) return;
@@ -91,14 +102,14 @@ const SiteHeader = () => {
         className={`flex w-full items-center justify-between px-6 py-8 md:px-10 transition-colors duration-500 ${
           shouldBeTransparent ? "text-white" : ""
         }`}
-    >
+      >
         <Link
           href="/"
           className="font-display text-xl font-medium tracking-wide text-brand-light uppercase"
         >
           Zoriography
         </Link>
-        <nav className="flex items-center gap-x-8">
+        <nav className="hidden items-center gap-x-8 md:flex" aria-label="Navigazione principale">
           {NAV_ITEMS.map((item) => {
             const isActive =
               pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href));
@@ -106,7 +117,7 @@ const SiteHeader = () => {
             return (
               <motion.div
                 key={item.href}
-                className="relative text-md uppercase tracking-[0.32em] text-white/60 sm:text-sm"
+                className="relative text-md uppercase tracking-[0.32em] text-white/60 text-xs lg:text-md"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 200, damping: 15 }}
               >
@@ -127,7 +138,65 @@ const SiteHeader = () => {
             );
           })}
         </nav>
+        <button
+          type="button"
+          className="relative flex h-10 w-10 items-center justify-center text-white md:hidden"
+          aria-controls="mobile-menu"
+          aria-expanded={isMobileMenuOpen}
+          aria-label={isMobileMenuOpen ? "Chiudi menu di navigazione" : "Apri menu di navigazione"}
+          onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+        >
+          <span
+            className={`absolute h-[2px] w-5 bg-current transition-transform duration-300 ${
+              isMobileMenuOpen ? "rotate-45" : "-translate-y-1.5"
+            }`}
+          />
+          <span
+            className={`absolute h-[2px] w-5 bg-current transition-opacity duration-300 ${
+              isMobileMenuOpen ? "opacity-0" : "opacity-100"
+            }`}
+          />
+          <span
+            className={`absolute h-[2px] w-5 bg-current transition-transform duration-300 ${
+              isMobileMenuOpen ? "-rotate-45" : "translate-y-1.5"
+            }`}
+          />
+        </button>
       </div>
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.nav
+            id="mobile-menu"
+            className="border-t border-white/10 bg-black/80 px-6 pb-6 pt-3 backdrop-blur-md md:hidden"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            aria-label="Menu mobile"
+          >
+            <ul className="flex flex-col gap-y-2">
+              {NAV_ITEMS.map((item) => {
+                const isActive =
+                  pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href));
+
+                return (
+                  <li key={`mobile-${item.href}`}>
+                    <Link
+                      href={item.href}
+                      className={`block rounded-md px-2 py-3 text-sm uppercase tracking-[0.24em] transition-colors ${
+                        isActive ? "text-brand" : "text-white/75 hover:text-white"
+                      }`}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 };
