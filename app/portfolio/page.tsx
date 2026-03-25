@@ -1,10 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
 import { useEffect, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
-import heroImage from "@/resources/images/wave-haikei-edit-2.webp";
+import heroImage from "@/resources/images/wave-haikei-edit-2.png";
 import type { SitePhoto } from "@/resources/images/site-photos";
 import { sitePhotos as sitePhotoCollection } from "@/resources/images/site-photos";
 
@@ -177,7 +182,7 @@ const PortfolioPage = () => {
 
   return (
     <div className="pb-32">
-      <section className="relative -mt-32 h-[90vh] min-h-[620px] w-full overflow-hidden z-20">
+      <section className="relative -mt-32 h-[60vh] min-h-[620px] w-full overflow-hidden z-20">
         <Image
           src={heroImage}
           alt="Texture astratta con onde per il portfolio"
@@ -223,8 +228,27 @@ const PortfolioPage = () => {
         />
       </section>
 
-      <section className="mt-72 z-10">
+      <section className="mt-56 z-10">
         <div className={`${storiesContainer} space-y-40`}>
+          <div className="relative flex h-full flex-col items-center justify-center px-6 pt-0 text-center sm:px-10">
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-sm uppercase tracking-[0.4em] text-white/60"
+            >
+              Scatti
+            </motion.p>
+            <motion.h1
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.18 }}
+              className="mt-10 font-display text-2xl text-brand-light tracking-[0.08em] uppercase sm:text-5xl"
+              style={{ textShadow: "4px 4px 3px rgba(0,0,0,0.8)" }}
+            >
+              Categorie
+            </motion.h1>
+          </div>
           {featureSections.map((section) => {
             const isImageLeft = section.align === "left";
 
@@ -318,65 +342,65 @@ const PortfolioPage = () => {
       <AnimatePresence>
         {selectedItem && (
           <>
-          <div className="bg-black/65 h-[100vh] w-[100vw] fixed inset-0 z-[90]"></div>
-          <motion.div
-            className="fixed inset-0 z-[90] flex items-center justify-center glassed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <button
-              type="button"
-              onClick={() => setSelectedItem(null)}
-              aria-label="Chiudi la visualizzazione"
-              className="absolute right-10 top-10 z-[95] rounded-full border border-white/30 bg-black/50 w-10 h-10 text-sm uppercase font-bold text-white/80 transition hover:border-white hover:text-white"
-            >
-              X
-            </button>
+            <div className="bg-black/65 h-[100vh] w-[100vw] fixed inset-0 z-[90]"></div>
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 220, damping: 24 }}
-              className="relative h-[min(88vh,980px)] w-[min(94vw,1500px)]"
+              className="fixed inset-0 z-[90] flex items-center justify-center glassed"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
             >
-              <div className="flex h-full flex-col gap-8 overflow-hidden rounded border border-white/10 bg-black/70 p-4 text-left text-white md:flex-row md:gap-8 md:p-6">
-                <div className="flex min-h-[42vh] w-full flex-[0.72] items-center justify-center overflow-hidden rounded border border-white/10 bg-black/35 p-3 md:min-h-0 md:p-4">
-                  <div className="relative h-full w-full">
-                    <Image
-                      src={selectedItem.image}
-                      alt={selectedItem.alt}
-                      fill
-                      className="object-contain"
-                      sizes="(max-width: 768px) 92vw, (max-width: 1400px) 68vw, 1280px"
-                      priority
-                      placeholder="blur"
-                      quality={88}
-                    />
+              <button
+                type="button"
+                onClick={() => setSelectedItem(null)}
+                aria-label="Chiudi la visualizzazione"
+                className="absolute right-10 top-10 z-[95] rounded-full border border-white/30 bg-black/50 w-10 h-10 text-sm uppercase font-bold text-white/80 transition hover:border-white hover:text-white"
+              >
+                X
+              </button>
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 220, damping: 24 }}
+                className="relative h-[min(88vh,980px)] w-[min(94vw,1500px)]"
+              >
+                <div className="flex h-full flex-col gap-8 overflow-hidden rounded border border-white/10 bg-black/70 p-4 text-left text-white md:flex-row md:gap-8 md:p-6">
+                  <div className="flex min-h-[42vh] w-full flex-[0.72] items-center justify-center overflow-hidden rounded border border-white/10 bg-black/35 p-3 md:min-h-0 md:p-4">
+                    <div className="relative h-full w-full">
+                      <Image
+                        src={selectedItem.image}
+                        alt={selectedItem.alt}
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 768px) 92vw, (max-width: 1400px) 68vw, 1280px"
+                        priority
+                        placeholder="blur"
+                        quality={88}
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-2 flex w-full flex-[0.28] flex-col justify-between overflow-y-auto md:mt-0">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.4em] text-white/60">
+                        Frame selezionato
+                      </p>
+                      <h3 className="mt-5 font-display text-3xl text-brand-light tracking-[0.08em] uppercase">
+                        {selectedItem.title}
+                      </h3>
+                      <p className="mt-20 text-sm leading-relaxed text-white/80">
+                        {selectedItem.description}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mt-5 text-sm leading-relaxed text-white/60">
+                        Premi ESC o la X in alto a destra per chiudere e tornare
+                        alla raccolta.
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div className="mt-2 flex w-full flex-[0.28] flex-col justify-between overflow-y-auto md:mt-0">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.4em] text-white/60">
-                      Frame selezionato
-                    </p>
-                    <h3 className="mt-5 font-display text-3xl text-brand-light tracking-[0.08em] uppercase">
-                      {selectedItem.title}
-                    </h3>
-                    <p className="mt-20 text-sm leading-relaxed text-white/80">
-                      {selectedItem.description}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="mt-5 text-sm leading-relaxed text-white/60">
-                      Premi ESC o la X in alto a destra per chiudere e tornare
-                      alla raccolta.
-                    </p>
-                  </div>
-                </div>
-              </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
           </>
         )}
       </AnimatePresence>

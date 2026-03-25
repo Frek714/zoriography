@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import heroImage from "@/resources/images/wave-haikei-edit-2.webp";
+import heroImage from "@/resources/images/wave-haikei-edit-2.png";
 import instagramImage from "@/resources/images/me.webp";
 import behanceImage from "@/resources/images/site-photos-thumb/photo31.webp";
 import channelPlaceholderImage from "@/resources/images/site-photos-thumb/photo73.webp";
@@ -59,7 +59,7 @@ const containerClass = "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8";
 
 const ContactPage = () => (
   <div className="pb-32">
-    <section className="relative -mt-32 h-[90vh] min-h-[620px] w-full overflow-hidden z-20">
+    <section className="relative -mt-32 h-[60vh] min-h-[620px] w-full overflow-hidden z-20">
       <Image
         src={heroImage}
         alt="Texture astratta con onde per il portfolio"

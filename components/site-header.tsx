@@ -6,8 +6,7 @@ import {
   AnimatePresence,
   motion,
   useMotionValueEvent,
-  useScroll,
-  useTransform,
+  useScroll
 } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -25,12 +24,14 @@ const SiteHeader = () => {
   const [heroInView, setHeroInView] = useState(false);
   const isHeroDriven = pathname === "/portfolio" || pathname === "/contatti" || pathname === "/acquista";
   const { scrollYProgress } = useScroll();
-  const headerOpacity = useTransform(scrollYProgress, [0, 0.08, 0.18], [0, 0, 1]);
+  const [isHomeHeaderVisible, setIsHomeHeaderVisible] = useState(!isHome);
   const [isInteractive, setIsInteractive] = useState(!isHome);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    setIsInteractive(!isHome);
+    const visibleByDefault = !isHome;
+    setIsHomeHeaderVisible(visibleByDefault);
+    setIsInteractive(visibleByDefault);
   }, [isHome]);
 
   useEffect(() => {
@@ -39,7 +40,20 @@ const SiteHeader = () => {
 
   useMotionValueEvent(scrollYProgress, "change", (value) => {
     if (!isHome) return;
-    setIsInteractive(value > 0.12);
+
+    const showThreshold = 0.12;
+    const hideThreshold = 0.08;
+
+    if (value >= showThreshold) {
+      setIsHomeHeaderVisible(true);
+      setIsInteractive(true);
+      return;
+    }
+
+    if (value <= hideThreshold) {
+      setIsHomeHeaderVisible(false);
+      setIsInteractive(false);
+    }
   });
 
   useEffect(() => {
@@ -85,15 +99,15 @@ const SiteHeader = () => {
 
   const shouldBeTransparent = isHeroDriven && heroInView;
   const headerBackground = shouldBeTransparent
-    ? "border-transparent bg-transparent backdrop-blur-none"
-    : "border-white/10 bg-black/70 backdrop-blur-md";
+    ? "border-transparent bg-transparent backdrop-blur-none shadow-none"
+    : "header-textured border-white/10 backdrop-blur-md";
 
   return (
     <motion.header
       key={isHome ? "site-header-home" : "site-header-page"}
       id="site-header"
-      style={isHome ? { opacity: headerOpacity } : { opacity: 1 }}
-      className={`fixed w-[100vw] inset-x-0 top-0 z-50 border-b transition-colors duration-500 pointer-events-none ${
+      style={isHome ? { opacity: isHomeHeaderVisible ? 1 : 0 } : { opacity: 1 }}
+      className={`fixed w-[100vw] inset-x-0 top-0 z-50 border-b transition-[opacity,background-color,border-color,box-shadow] duration-500 pointer-events-none ${
         headerBackground
       } ${!isHome || isInteractive ? "pointer-events-auto" : ""}`}
       data-transparent={shouldBeTransparent ? "true" : "false"}
@@ -167,7 +181,7 @@ const SiteHeader = () => {
         {isMobileMenuOpen && (
           <motion.nav
             id="mobile-menu"
-            className="border-t border-white/10 bg-black/80 px-6 pb-6 pt-3 backdrop-blur-md lg:hidden"
+            className="header-textured border-t border-white/10 px-6 pb-6 pt-3 backdrop-blur-md lg:hidden"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
