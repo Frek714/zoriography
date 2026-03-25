@@ -36,7 +36,7 @@ const featureSections: FeatureSection[] = [
     subtitle: "Assaporare il momento",
     description:
       "Nei paesaggi cerco equilibrio, profondità e luce. Ogni luogo ha un ritmo diverso, e fotografarlo significa imparare ad ascoltarlo.",
-    photo: photoById("photo9"),
+    photo: photoById("photo5"),
     align: "right",
   },
   {
@@ -52,7 +52,7 @@ const featureSections: FeatureSection[] = [
     subtitle: "Divertirsi a scoprire",
     description:
       "Nei viaggi trovo nuovi modi di guardare. Mi interessa cogliere la luce, le persone e le atmosfere che rendono unico ogni posto.",
-    photo: photoById("photo22"),
+    photo: photoById("photo28"),
     align: "right",
   },
   {
@@ -317,6 +317,8 @@ const PortfolioPage = () => {
 
       <AnimatePresence>
         {selectedItem && (
+          <>
+          <div className="bg-black/65 h-[100vh] w-[100vw] fixed inset-0 z-[90]"></div>
           <motion.div
             className="fixed inset-0 z-[90] flex items-center justify-center glassed"
             initial={{ opacity: 0 }}
@@ -375,6 +377,7 @@ const PortfolioPage = () => {
               </div>
             </motion.div>
           </motion.div>
+          </>
         )}
       </AnimatePresence>
     </div>

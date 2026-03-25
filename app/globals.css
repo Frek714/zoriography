@@ -46,7 +46,7 @@ body::after {
   background-position: top left;
   mix-blend-mode: screen;
   opacity: 0.28;
-  filter: brightness(1.55) contrast(1.08);
+  /* filter: brightness(1.55) contrast(1.08); */
   z-index: -2;
 }
 
@@ -60,9 +60,10 @@ a {
 }
 
 .glassed {
-background: rgba(0, 0, 0, 0.45);
-backdrop-filter: blur(15px);
--webkit-backdrop-filter: blur(15px);
+background: rgba(28, 28, 28, 0.6);
+/* box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); */
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
   /* border-radius: 20px; */
   /* border: 1px solid rgba(255, 255, 255, 0.3); */
 /* box-shadow: 
