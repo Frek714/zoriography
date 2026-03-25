@@ -302,22 +302,53 @@ const HomePage = () => {
           Federico D&apos;Ursi
         </motion.p>
         <motion.div
-          className="absolute bottom-12 text-xs uppercase tracking-[0.35em] text-white/30"
+          className="absolute bottom-10 z-20 flex h-20 w-40 items-center justify-center overflow-visible text-[0.62rem] uppercase tracking-[0.35em] text-white/30 sm:bottom-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4, ease: [0.23, 1, 0.32, 1] }}
         >
           <motion.div
-            initial={{ y: 0 }}
-            animate={{ y: 8 }}
+            className="flex flex-col items-center gap-1"
+            animate={{
+              y: [2, -11, 14, 6, 11, 8, 8],
+              scaleY: [1, 1.03, 0.95, 1.01, 0.98, 1, 1],
+            }}
             transition={{
-              duration: 0.35,
-              repeat: 100,
-              repeatType: "reverse",
-              ease: "easeInOut",
+              duration: 2.45,
+              times: [0, 0.22, 0.58, 0.74, 0.87, 0.96, 1],
+              ease: [
+                [0.16, 1, 0.3, 1],
+                [0.4, 0, 1, 1],
+                [0.22, 1, 0.36, 1],
+                [0.22, 1, 0.36, 1],
+                [0.22, 1, 0.36, 1],
+                "easeOut",
+              ],
+              repeat: Infinity,
+              repeatDelay: 0.45,
             }}
           >
-            scroll down
+            <span className="whitespace-nowrap">scroll down</span>
+            <svg
+              className="h-4 w-4 text-white/45"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 5v13"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+              <path
+                d="m6 13 6 6 6-6"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </motion.div>
         </motion.div>
       </section>

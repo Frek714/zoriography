@@ -117,7 +117,7 @@ export const viewport: Viewport = {
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
   <html lang="it" className={`${manifesto.variable} ${montserrat.variable}`}>
-    <body className="bg-[radial-gradient(circle_at_top,_#1d1d21,_#0d0d0f)] text-white antialiased overflow-y-hidden overflow-x-hidden">
+    <body className="text-white antialiased overflow-x-hidden">
       <SmoothScrollProvider>
         <SiteHeader />
         <main className="w-full px-0 pt-32">{children}</main>

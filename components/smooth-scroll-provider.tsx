@@ -11,7 +11,8 @@ const SmoothScrollProvider = ({ children }: SmoothScrollProviderProps) => {
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
-      smoothWheel: true
+      smoothWheel: true,
+      syncTouch: true
     });
 
     let animationFrame = requestAnimationFrame(raf);
