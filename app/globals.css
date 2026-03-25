@@ -30,6 +30,7 @@ body {
 body::before {
   content: "";
   position: fixed;
+  width: 100vw;
   inset: 0;
   pointer-events: none;
   background-image: var(--grain-texture);
@@ -103,3 +104,8 @@ backdrop-filter: blur(15px);
     rgba(255, 255, 255, 0.3)
   );
 } */
+
+.text-xxs {
+  font-size: 0.625rem;
+  line-height: 0.75rem;
+}

@@ -93,7 +93,7 @@ const SiteHeader = () => {
       key={isHome ? "site-header-home" : "site-header-page"}
       id="site-header"
       style={isHome ? { opacity: headerOpacity } : { opacity: 1 }}
-      className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-500 pointer-events-none ${
+      className={`fixed w-[100vw] inset-x-0 top-0 z-50 border-b transition-colors duration-500 pointer-events-none ${
         headerBackground
       } ${!isHome || isInteractive ? "pointer-events-auto" : ""}`}
       data-transparent={shouldBeTransparent ? "true" : "false"}
@@ -109,7 +109,7 @@ const SiteHeader = () => {
         >
           Zoriography
         </Link>
-        <nav className="hidden items-center gap-x-8 md:flex" aria-label="Navigazione principale">
+        <nav className="hidden items-center gap-x-8 lg:flex" aria-label="Navigazione principale">
           {NAV_ITEMS.map((item) => {
             const isActive =
               pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href));
@@ -117,7 +117,7 @@ const SiteHeader = () => {
             return (
               <motion.div
                 key={item.href}
-                className="relative text-md uppercase tracking-[0.32em] text-white/60 text-xs lg:text-md"
+                className="relative text-sm uppercase tracking-[0.32em] text-white/60 sm:text-xs md:text-sm xl:text-base"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 200, damping: 15 }}
               >
@@ -140,7 +140,7 @@ const SiteHeader = () => {
         </nav>
         <button
           type="button"
-          className="relative flex h-10 w-10 items-center justify-center text-white md:hidden"
+          className="relative flex h-10 w-10 items-center justify-center text-white lg:hidden"
           aria-controls="mobile-menu"
           aria-expanded={isMobileMenuOpen}
           aria-label={isMobileMenuOpen ? "Chiudi menu di navigazione" : "Apri menu di navigazione"}
@@ -167,7 +167,7 @@ const SiteHeader = () => {
         {isMobileMenuOpen && (
           <motion.nav
             id="mobile-menu"
-            className="border-t border-white/10 bg-black/80 px-6 pb-6 pt-3 backdrop-blur-md md:hidden"
+            className="border-t border-white/10 bg-black/80 px-6 pb-6 pt-3 backdrop-blur-md lg:hidden"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
