@@ -10,6 +10,7 @@ Imposta queste variabili nel progetto Vercel:
 - `GOOGLE_SITE_VERIFICATION=<token_search_console>`
 - `BING_SITE_VERIFICATION=<token_bing>` (opzionale)
 - `NEXT_PUBLIC_SITE_UPDATED_AT=2026-03-31` (opzionale, aggiorna quando cambi contenuti importanti)
+- `ENFORCE_CANONICAL_REDIRECTS=false` (consigliato, evita conflitti con redirect dominio gestiti da Vercel)
 
 Poi fai un nuovo deploy in Production.
 

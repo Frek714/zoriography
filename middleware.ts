@@ -19,8 +19,13 @@ const getCanonicalUrl = () => {
   return new URL(normalizeUrl(value));
 };
 
+const isCanonicalRedirectEnabled = () =>
+  process.env.ENFORCE_CANONICAL_REDIRECTS === "true";
+
 const shouldEnforceCanonicalHost = () =>
-  process.env.VERCEL === "1" && process.env.VERCEL_ENV === "production";
+  isCanonicalRedirectEnabled() &&
+  process.env.VERCEL === "1" &&
+  process.env.VERCEL_ENV === "production";
 
 export const middleware = (request: NextRequest) => {
   if (!shouldEnforceCanonicalHost()) {
