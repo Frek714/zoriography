@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { absoluteUrl } from "@/lib/seo";
+import { absoluteUrl, resolveSiteLastModified } from "@/lib/seo";
 
 const routes = [
   {
@@ -25,7 +25,7 @@ const routes = [
 ];
 
 const sitemap = (): MetadataRoute.Sitemap => {
-  const lastModified = new Date();
+  const lastModified = resolveSiteLastModified();
 
   return routes.map((route) => ({
     url: absoluteUrl(route.path),

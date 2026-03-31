@@ -1,15 +1,37 @@
 import type { Metadata } from "next";
 
+const DEFAULT_CANONICAL_URL = "https://zoriography.com";
+
 const ensureProtocol = (value: string) =>
   /^https?:\/\//i.test(value) ? value : `https://${value}`;
 
 const normalizeUrl = (value: string) =>
   ensureProtocol(value).replace(/\/+$/, "");
 
+const parseDate = (value?: string) => {
+  if (!value) return undefined;
+
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? undefined : parsed;
+};
+
+const inferredVercelProductionUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : undefined;
+
+const canonicalUrl = normalizeUrl(
+  process.env.NEXT_PUBLIC_SITE_URL ??
+    inferredVercelProductionUrl ??
+    DEFAULT_CANONICAL_URL
+);
+
+const canonicalHost = new URL(canonicalUrl).host.toLowerCase();
+
 export const siteConfig = {
   name: "Zoriography",
   ownerName: "Federico D'Ursi",
-  url: normalizeUrl(process.env.NEXT_PUBLIC_SITE_URL ?? "https://zoriography.com"),
+  url: canonicalUrl,
+  host: canonicalHost,
   locale: "it_IT",
   language: "it-IT",
   description:
@@ -31,8 +53,21 @@ export const siteConfig = {
   ],
 } as const;
 
-export const isPreviewDeployment = process.env.VERCEL_ENV === "preview";
-export const shouldIndexSite = !isPreviewDeployment;
+const vercelEnv = process.env.VERCEL_ENV;
+
+export const isVercelDeployment = process.env.VERCEL === "1";
+export const isPreviewDeployment = vercelEnv === "preview";
+export const isProductionDeployment = isVercelDeployment
+  ? vercelEnv === "production"
+  : process.env.NODE_ENV === "production";
+export const shouldIndexSite = isProductionDeployment && !isPreviewDeployment;
+
+const configuredSiteLastModified =
+  parseDate(process.env.NEXT_PUBLIC_SITE_UPDATED_AT) ??
+  parseDate(process.env.SITE_LAST_MODIFIED);
+
+export const resolveSiteLastModified = () =>
+  configuredSiteLastModified ?? new Date();
 
 export const defaultMetadataImage = {
   url: "/opengraph-image",
