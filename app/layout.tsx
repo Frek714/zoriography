@@ -7,6 +7,7 @@ import SmoothScrollProvider from "@/components/smooth-scroll-provider";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import JsonLd from "@/components/json-ld";
+import { Analytics } from '@vercel/analytics/next';
 import {
   absoluteUrl,
   defaultMetadataImage,
@@ -124,6 +125,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
         <JsonLd data={[websiteSchema, personSchema]} />
         <SiteFooter />
       </SmoothScrollProvider>
+      <Analytics />
     </body>
   </html>
 );
