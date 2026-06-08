@@ -1,5 +1,5 @@
 # zoriography
 
-## SEO
+## Sito web disponibile a:
 
-Checklist operativa: [`docs/seo-indexing-checklist.md`](docs/seo-indexing-checklist.md)
+[Zoriography](https://www.zoriography.com/)
